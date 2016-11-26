@@ -21,7 +21,10 @@
  *     Equal to the argument provided in the constructor.
  *
  * ValueType& At(u32 x, u32 y, u32 z, ...)
- *     Access the dynarray element at the position of choice.*/
+ *     Access the dynarray element at the position of choice.
+ *
+ * ValueType* Data()
+ *     Get the underlying array*/
 
 #ifndef ASTUURMAN_DYNARRAY_HPP
 #define ASTUURMAN_DYNARRAY_HPP
@@ -114,10 +117,25 @@ namespace Astuurman {
             return value[Index(indexes...)];
         }
 
+        const ValueType& At(to<u32, decltype(Is)>... indexes) const
+        {
+            return value[Index(indexes...)];
+        }
+
         template<u32 dim>
         u32 Size() const
         {
             return std::get<dim>(size);
+        }
+
+        ValueType* Data()
+        {
+            return value;
+        }
+
+        const ValueType* Data() const
+        {
+            return value;
         }
     };
 }
