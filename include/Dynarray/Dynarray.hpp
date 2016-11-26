@@ -81,10 +81,10 @@ namespace Astuurman {
             return std::get<index + 1>(size) * IndexOffset<index + 1, Tail...>(tail...);
         }
 
-        template<u32 dimIndex, typename Head>
-        u64 Index(Head head)
+        template<u32 dimIndex>
+        u64 Index()
         {
-            return head * IndexOffset<dimIndex, Head>(head);
+            return 0;
         }
 
         template<u32 dimIndex = 0, typename Head, typename... Tail>
