@@ -10,6 +10,9 @@ using namespace Astuurman;
 
 int main()
 {
+    Dynstring str("test");
+    std::cout << str[0] << str[1] << str[2] << str[3] << std::endl;
+
     /*
     Dynarray<3, u32> myDynarray(2,3,4);
 

@@ -12,7 +12,7 @@
 
 namespace Astuurman {
 
-class Dynstring : private Dynarray<1, char>
+class Dynstring : public Dynarray<1, char>
 {
 public:
     Dynstring(const char* value) :
