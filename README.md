@@ -12,4 +12,4 @@ If you miss a feature, make an issue.
 
 # TODO list
 - Access by array operator. Pretty hard, so don't expect this anytime soon.
-- Column-major memory layout. I think it's nicer to have the first dimension be layed out as a complete array.
+- Column-major memory layout. I think it's nicer to have the first dimension be laid out as a complete array.
