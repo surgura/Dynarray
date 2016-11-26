@@ -1,5 +1,5 @@
 # Dynarray
-N-dymensional array with static runtime size.
+N-dimensional array with static runtime size.
 
 ```c++
 Dynarray<2, float> someArray(10, 15);
