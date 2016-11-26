@@ -8,7 +8,7 @@ someArray.At(2,9) = 15.0654;
 ```
 
 # Feature request
-If miss a feature, make an issue.
+If you miss a feature, make an issue.
 
 # TODO list
 - Access by array operator. Pretty hard, so don't expect this anytime soon.
