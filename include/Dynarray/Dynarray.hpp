@@ -101,7 +101,7 @@ namespace Astuurman {
             return head * IndexOffset<dimIndex, Head, Tail...>(head, tail...) + Index<dimIndex + 1, Tail...>(tail...);
         }
     public:
-        Dynarray(ValueType* value, decltype(Is, u32{})... sizes) :
+        Dynarray(const ValueType* value, decltype(Is, u32{})... sizes) :
             value(new ValueType[Multiply(sizes...)]()),
             size(std::make_tuple(sizes...))
         {
