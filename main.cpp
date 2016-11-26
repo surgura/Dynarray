@@ -3,6 +3,7 @@
 /// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "Dynarray/Dynarray.hpp"
+#include "Dynarray/Dynstring.hpp"
 #include <iostream>
 
 using namespace Astuurman;
