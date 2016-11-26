@@ -45,10 +45,10 @@ namespace Astuurman {
     template <std::size_t V>
     using make_indseq = make_index_sequence<V>;
 
-    template<std::size_t dimension, typename ValueType, typename = make_indseq<dimension>>
+    template<u32 dimension, typename ValueType, typename = make_indseq<dimension>>
     class Dynarray;
 
-    template <std::size_t dimension, typename ValueType, std::size_t... Is>
+    template <u32 dimension, typename ValueType, std::size_t... Is>
     class Dynarray<dimension, ValueType, indseq<Is...>>
     {
         template<typename To, typename>
