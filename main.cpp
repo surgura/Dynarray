@@ -9,8 +9,15 @@ using namespace Astuurman;
 
 int main()
 {
-    Dynarray<3, u32> myDynarray(2,3,4);
+    const Dynarray<3, u32> myDynarray(2,3,4);
+    u32 t[3] = {5,6,7};
+    const Dynarray<1, u32> myDynarray2(t,3);
 
+    for(u32 x = 0; x < myDynarray2.Size<0>(); ++x)
+    {
+        std::cout << x << " " << myDynarray2.At(x) << std::endl;
+    }
+/*
     std::cout << "Dimension: " << myDynarray.Dimension() << std::endl;
     std::cout << "Size " << 0 << ": " << myDynarray.Size<0>() << std::endl;
     std::cout << "Size " << 1 << ": " << myDynarray.Size<1>() << std::endl;
@@ -28,7 +35,7 @@ int main()
                 std::cout << x << " " << y << " " << z << " " << myDynarray.At(x,y,z) << std::endl;
             }
         }
-    }
+    }*/
 
     system("pause");
 

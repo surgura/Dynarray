@@ -58,49 +58,55 @@ namespace Astuurman {
         using to = To;
 
         ValueType* value;
-        std::tuple<to<u32, decltype(Is)>...> size;
+        const std::tuple<to<u32, decltype(Is)>...> size;
 
         template<typename Head>
-        u64 Multiply(Head head)
+        u64 Multiply(Head head) const
         {
             return head;
         }
 
         template<typename Head, typename... Tail>
-        u64 Multiply(Head head, Tail... tail)
+        u64 Multiply(Head head, Tail... tail) const
         {
             return head * Multiply(tail...);
         }
 
         template<u32 index, typename Head>
-        u64 IndexOffset(Head head)
+        u64 IndexOffset(Head head) const
         {
             return 1;
         }
 
         template<u32 index, typename Head, typename... Tail>
-        u64 IndexOffset(Head head, Tail... tail)
+        u64 IndexOffset(Head head, Tail... tail) const
         {
             return std::get<index + 1>(size) * IndexOffset<index + 1, Tail...>(tail...);
         }
 
         template<u32 dimIndex>
-        u64 Index()
+        u64 Index() const
         {
             return 0;
         }
 
         template<u32 dimIndex = 0, typename Head, typename... Tail>
-        u64 Index(Head head, Tail... tail)
+        u64 Index(Head head, Tail... tail) const
         {
             return head * IndexOffset<dimIndex, Head, Tail...>(head, tail...) + Index<dimIndex + 1, Tail...>(tail...);
         }
     public:
-        Dynarray(decltype(Is, u32{})... sizes)
+        Dynarray(ValueType* value, decltype(Is, u32{})... sizes) :
+            value(new ValueType[Multiply(sizes...)]()),
+            size(std::make_tuple(sizes...))
         {
-            value = new ValueType[Multiply(sizes...)]();
-            size = std::make_tuple(sizes...);
+            std::copy(value, value + Multiply(sizes...), this->value);
         }
+
+        Dynarray(decltype(Is, u32{})... sizes) :
+            value(new ValueType[Multiply(sizes...)]()),
+            size(std::make_tuple(sizes...))
+        {}
 
         ~Dynarray()
         {
