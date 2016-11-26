@@ -10,6 +10,7 @@ using namespace Astuurman;
 
 int main()
 {
+    /*
     Dynarray<3, u32> myDynarray(2,3,4);
 
     std::cout << "Dimension: " << myDynarray.Dimension() << std::endl;
@@ -30,7 +31,7 @@ int main()
             }
         }
     }
-
+*/
     system("pause");
 
 	return 0;

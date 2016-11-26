@@ -16,15 +16,10 @@ class Dynstring : private Dynarray<1, char>
 {
 public:
     Dynstring(const char* value) :
-        Dynarray(std::strlen(value))
-    {
-        u32 i = 0;
-        while(value[i] != '\0')
-        {
-            ++i;
-            At(i) = value[i];
-        }
-    }
+        Dynstring(value, std::strlen(value)) {}
+
+    Dynstring(const char* value, u32 length) :
+        Dynarray(value, length) {}
 
     const char& operator[] (u32 index) const
     {
