@@ -10,6 +10,11 @@
  *
  * Constructor(u32 size_x, u32 size_y, u32 size_z, ...)
  *     Construct the object with given sizes for each dimension.
+ * Constructor(ValueType[] initialValue, u32 size_x, u32 size_y, u32 size_z, ...)
+ *     Construct the object with given sizes for each dimension.
+ *     InitialValue will be used to initialize the underlying array.
+ *     Layout is row-major
+ *     [x0y0, x0y1, x0y2, x1y0, x2y1, ...]
  *
  * void Dimension()
  *     Get the dimension of the array.
