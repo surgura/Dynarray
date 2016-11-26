@@ -1,2 +1,7 @@
 *.vcxproj
 *.sln
+*.cbp
+*.depend
+*.layout
+*.exe
+*.o
