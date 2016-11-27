@@ -36,6 +36,7 @@
 #define ASTUURMAN_DYNARRAY_HPP
 
 #include <tuple>
+#include <utility>
 
 // If you are using a C++14 compiler you can exchange this for the std index sequence.
 #include "IntegerSequence.hpp"
@@ -50,9 +51,9 @@ namespace Astuurman {
 
     /// If you have a C++14 compiler you can use the std index sequence instead.
     template<size_t... T>
-    using indseq = index_sequence<T...>;
+    using indseq = std::index_sequence<T...>;//index_sequence<T...>;
     template <std::size_t V>
-    using make_indseq = make_index_sequence<V>;
+    using make_indseq = std::make_index_sequence<V>;//make_index_sequence<V>;
 
     template<u32 dimension, typename ValueType, typename = make_indseq<dimension>>
     class Dynarray;
