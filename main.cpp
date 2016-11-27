@@ -2,21 +2,35 @@
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "Dynarray/Dynarray.hpp"
 #include <iostream>
+#include "Dynarray/Dynarray.hpp"
 
 using namespace Astuurman;
 
+void Test(Dynarray<3, u32> arr)
+{
+    std::cout << arr.At(0,1,2) << std::endl;
+}
+
 int main()
 {
-    const Dynarray<3, u32> myDynarray(2,3,4);
-    u32 t[3] = {5,6,7};
+    Dynarray<3, u32> myDynarray(2,3,4);
+    myDynarray.At(0,1,2) = 4;
+    Test(myDynarray);
+    Dynarray<3, u32> myDynarray2 = myDynarray;
+    myDynarray2.At(0,1,3) = myDynarray2.At(0,1,2);
+    myDynarray2.At(0,1,2) = 5;
+    std::cout << myDynarray.At(0,1,2) << std::endl;
+    std::cout << myDynarray2.At(0,1,2) << std::endl;
+    std::cout << myDynarray2.At(0,1,3) << std::endl;
+
+/*    u32 t[3] = {5,6,7};
     const Dynarray<1, u32> myDynarray2(t,3);
 
     for(u32 x = 0; x < myDynarray2.Size<0>(); ++x)
     {
         std::cout << x << " " << myDynarray2.At(x) << std::endl;
-    }
+    }*/
 /*
     std::cout << "Dimension: " << myDynarray.Dimension() << std::endl;
     std::cout << "Size " << 0 << ": " << myDynarray.Size<0>() << std::endl;
