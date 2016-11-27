@@ -38,9 +38,6 @@
 #include <tuple>
 #include <utility>
 
-// If you are using a C++14 compiler you can exchange this for the std index sequence.
-#include "IntegerSequence.hpp"
-
 namespace Astuurman {
 
     /// Define as you like.
@@ -49,17 +46,11 @@ namespace Astuurman {
     // 64 bit unsigned integer
     using u64 = unsigned long long;
 
-    /// If you have a C++14 compiler you can use the std index sequence instead.
-    template<size_t... T>
-    using indseq = std::index_sequence<T...>;//index_sequence<T...>;
-    template <std::size_t V>
-    using make_indseq = std::make_index_sequence<V>;//make_index_sequence<V>;
-
-    template<u32 dimension, typename ValueType, typename = make_indseq<dimension>>
+    template<u32 dimension, typename ValueType, typename = std::make_index_sequence<dimension>>
     class Dynarray;
 
     template <u32 dimension, typename ValueType, std::size_t... Is>
-    class Dynarray<dimension, ValueType, indseq<Is...>>
+    class Dynarray<dimension, ValueType, std::index_sequence<Is...>>
     {
         template<typename To, typename>
         using to = To;
@@ -67,16 +58,15 @@ namespace Astuurman {
         ValueType* value;
         const std::tuple<to<u32, decltype(Is)>...> size;
 
-        template<typename Head>
-        u64 Multiply(Head head) const
+        u64 MultiplySizes(to<u32, decltype(Is)>... sizes)
         {
-            return head;
-        }
+            u32 argArray[] = {sizes...};
 
-        template<typename Head, typename... Tail>
-        u64 Multiply(Head head, Tail... tail) const
-        {
-            return head * Multiply(tail...);
+            u64 res = 1;
+            for (u32 i = 0; i < sizeof(argArray); ++i)
+                res *= argArray[i];
+
+            return res;
         }
 
         template<u32 index, typename Head>
@@ -103,15 +93,15 @@ namespace Astuurman {
             return head * IndexOffset<dimIndex, Head, Tail...>(head, tail...) + Index<dimIndex + 1, Tail...>(tail...);
         }
     public:
-        Dynarray(const ValueType* value, decltype(Is, u32{})... sizes) :
-            value(new ValueType[Multiply(sizes...)]()),
+        Dynarray(const ValueType* value, to<u32, decltype(Is)>... sizes) :
+            value(new ValueType[MultiplySizes(sizes...)]()),
             size(std::make_tuple(sizes...))
         {
-            std::copy(value, value + Multiply(sizes...), this->value);
+            std::copy(value, value + MultiplySizes(sizes...), this->value);
         }
 
-        Dynarray(decltype(Is, u32{})... sizes) :
-            value(new ValueType[Multiply(sizes...)]()),
+        Dynarray(to<u32, decltype(Is)>... sizes) :
+            value(new ValueType[MultiplySizes(sizes...)]()),
             size(std::make_tuple(sizes...))
         {}
 
