@@ -60,25 +60,19 @@ namespace Astuurman {
 
         u64 MultiplySizes(to<u32, decltype(Is)>... sizes)
         {
-            u32 argArray[] = {sizes...};
-
             u64 res = 1;
-            for (u32 i = 0; i < sizeof(argArray); ++i)
-                res *= argArray[i];
-
+            for (const u32& size : {sizes...})
+                res *= size;
             return res;
         }
 
-        template<u32 index, typename Head>
-        u64 IndexOffset(Head head) const
+        template<u32 index>
+        constexpr u64 IndexOffset() const
         {
-            return 1;
-        }
-
-        template<u32 index, typename Head, typename... Tail>
-        u64 IndexOffset(Head head, Tail... tail) const
-        {
-            return std::get<index + 1>(size) * IndexOffset<index + 1, Tail...>(tail...);
+            u64 res = 1;
+            for(u32 i = index + 1; i < std::tuple_size<decltype(size)>::value; ++i)
+                res *= std::get<index>(size);
+            return res;
         }
 
         template<u32 dimIndex>
@@ -90,7 +84,7 @@ namespace Astuurman {
         template<u32 dimIndex = 0, typename Head, typename... Tail>
         u64 Index(Head head, Tail... tail) const
         {
-            return head * IndexOffset<dimIndex, Head, Tail...>(head, tail...) + Index<dimIndex + 1, Tail...>(tail...);
+            return head * IndexOffset<dimIndex>() + Index<dimIndex + 1, Tail...>(tail...);
         }
     public:
         Dynarray(const ValueType* value, to<u32, decltype(Is)>... sizes) :
