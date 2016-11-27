@@ -5,8 +5,8 @@
 /// @Author Aart Stuurman
 /// @Source https://github.com/surgura/Dynarray
 
-#include "Dynarray/Dynarray.hpp"
 #include <iostream>
+#include "Dynarray/Dynarray.hpp"
 
 using namespace Astuurman;
 
@@ -20,6 +20,8 @@ int main()
     {
         std::cout << x << " " << myDynarray2.At(x) << std::endl;
     }
+
+    std::cout << myDynarray.At(1,2,3) << " " << myDynarray.At(0,0,0) << std::endl;
 /*
     std::cout << "Dimension: " << myDynarray.Dimension() << std::endl;
     std::cout << "Size " << 0 << ": " << myDynarray.Size<0>() << std::endl;
