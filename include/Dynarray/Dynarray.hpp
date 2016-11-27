@@ -66,25 +66,22 @@ namespace Astuurman {
             return res;
         }
 
-        template<u32 index>
-        constexpr u64 IndexOffset() const
-        {
-            u64 res = 1;
-            for(u32 i = index + 1; i < std::tuple_size<decltype(size)>::value; ++i)
-                res *= std::get<index>(size);
-            return res;
-        }
-
         template<u32 dimIndex>
-        u64 Index() const
+        u64 _Index(u32 offset) const
         {
             return 0;
         }
 
-        template<u32 dimIndex = 0, typename Head, typename... Tail>
+        template<u32 dimIndex, typename Head, typename... Tail>
+        u64 _Index(u32 offset, Head head, Tail... tail) const
+        {
+            return head * offset + _Index<dimIndex + 1, Tail...>(offset * std::get<dimIndex>(size), tail...);
+        }
+
+        template<typename Head, typename... Tail>
         u64 Index(Head head, Tail... tail) const
         {
-            return head * IndexOffset<dimIndex>() + Index<dimIndex + 1, Tail...>(tail...);
+            return head + _Index<1, Tail...>(std::get<0>(size), tail...);
         }
     public:
         Dynarray(const ValueType* value, to<u32, decltype(Is)>... sizes) :
