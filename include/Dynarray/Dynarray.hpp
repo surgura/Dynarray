@@ -56,7 +56,7 @@ namespace Astuurman {
         using to = To;
 
         ValueType* value;
-        const std::tuple<to<u32, decltype(Is)>...> size;
+        std::tuple<to<u32, decltype(Is)>...> size;
 
         u64 MultiplySizes(to<u32, decltype(Is)>... sizes)
         {
@@ -99,6 +99,33 @@ namespace Astuurman {
         ~Dynarray()
         {
             delete[] value;
+        }
+
+        // move constructor
+        Dynarray(Dynarray&& other)
+            : value(other.value), size(other.size)
+        {
+            other.value = nullptr;
+        }
+
+        // move assignment
+        Dynarray& operator=(Dynarray&& other)
+        {
+            std::swap(value);
+            size = other.size;
+            return *this;
+        }
+
+        // copy constructor
+        Dynarray(const Dynarray& other) :
+            Dynarray(other.value, std::get<Is>(other.size)...)
+        {}
+
+        // copy assignment
+        Dynarray& operator=(const Dynarray& other)
+        {
+            value = new ValueType[Multiply(std::get<Is>(other.size)...)](other.value);
+            size = other.size;
         }
 
         constexpr u32 Dimension()
