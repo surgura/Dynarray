@@ -1,9 +1,9 @@
-#ifndef ASTUURMAN_INTEGER_SEQUENCE_HPP
-#define ASTUURMAN_INTEGER_SEQUENCE_HPP
-
 /// This is --not-- written by Aart Stuurman
 /// Source:
 /// http://stackoverflow.com/a/40793363/2476219
+
+#ifndef ASTUURMAN_INTEGER_SEQUENCE_HPP
+#define ASTUURMAN_INTEGER_SEQUENCE_HPP
 
 namespace Astuurman {
     template <class T, T... Vs>

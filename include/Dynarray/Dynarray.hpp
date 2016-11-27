@@ -3,6 +3,7 @@
 /// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 /// @Author Aart Stuurman
+/// @Source https://github.com/surgura/Dynarray
 
 /// Class summary
 /* template<u32 dimension, typename ValueType>
