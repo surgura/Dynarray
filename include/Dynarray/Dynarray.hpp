@@ -58,12 +58,15 @@ namespace Astuurman {
         ValueType* value;
         std::tuple<to<u32, decltype(Is)>...> size;
 
-        u64 MultiplySizes(to<u32, decltype(Is)>... sizes)
+        u64 MultiplySizes() const
         {
-            u64 res = 1;
-            for (const u32& size : {sizes...})
-                res *= size;
-            return res;
+            return 1;
+        }
+
+        template<typename Head, typename... Tail>
+        u64 MultiplySizes(Head head, Tail... tail) const
+        {
+            return head * MultiplySizes(tail...);
         }
 
         template<u32 dimIndex>
