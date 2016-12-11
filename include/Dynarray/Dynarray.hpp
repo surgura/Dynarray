@@ -81,10 +81,10 @@ namespace Astuurman {
             return head * offset + _Index<dimIndex + 1, Tail...>(offset * std::get<dimIndex>(size), tail...);
         }
 
-        template<typename Head, typename... Tail>
-        u64 Index(Head head, Tail... tail) const
+        template<typename... T>
+        u64 Index(T... t) const
         {
-            return head + _Index<1, Tail...>(std::get<0>(size), tail...);
+            return _Index<0, T...>(1, t...);
         }
     public:
         Dynarray(const ValueType* value, to<u32, decltype(Is)>... sizes) :
