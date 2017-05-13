@@ -1,6 +1,9 @@
 # Dynarray
 N-dimensional array with static runtime size.
 
+# Requirements
+C++14 is required.
+
 # Example usage
 ```c++
 Dynarray<2, float> someArray(10, 15);
