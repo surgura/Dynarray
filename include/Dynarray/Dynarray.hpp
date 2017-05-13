@@ -6,12 +6,12 @@
 /// @Source https://github.com/surgura/Dynarray
 
 /// Class summary
-/* template<u32 dimension, typename ValueType>
+/* template<size_t dimension, typename ValueType>
  * class Dynarray;
  *
- * Constructor(u32 size_x, u32 size_y, u32 size_z, ...)
+ * Constructor(size_t size_x, size_t size_y, size_t size_z, ...)
  *     Construct the object with given sizes for each dimension.
- * Constructor(ValueType[] initialValue, u32 size_x, u32 size_y, u32 size_z, ...)
+ * Constructor(ValueType[] initialValue, size_t size_x, size_t size_y, size_t size_z, ...)
  *     Construct the object with given sizes for each dimension.
  *     InitialValue will be used to initialize the underlying array.
  *     Layout is column-major
@@ -21,12 +21,12 @@
  *     Get the dimension of the array.
  *     Equal to the template parameter.
  *
- * template<u32 dim>
- * u32 Size()
+ * template<size_t dim>
+ * size_t Size()
  *     Get the size in the given dimension.
  *     Equal to the argument provided in the constructor.
  *
- * ValueType& At(u32 x, u32 y, u32 z, ...)
+ * ValueType& At(size_t x, size_t y, size_t z, ...)
  *     Access the dynarray element at the position of choice.
  *
  * ValueType* Data()
@@ -40,61 +40,55 @@
 
 namespace Astuurman {
 
-    /// Define as you like.
-    // 32 bit unsigned integer
-    using u32 = unsigned long;
-    // 64 bit unsigned integer
-    using u64 = unsigned long long;
-
-    template<u32 dimension, typename ValueType, typename = std::make_index_sequence<dimension>>
+    template<size_t dimension, typename ValueType, typename = std::make_index_sequence<dimension>>
     class Dynarray;
 
-    template <u32 dimension, typename ValueType, std::size_t... Is>
+    template <size_t dimension, typename ValueType, std::size_t... Is>
     class Dynarray<dimension, ValueType, std::index_sequence<Is...>>
     {
-        template<typename To, typename>
+        template<typename To, std::size_t>
         using to = To;
 
         ValueType* value;
-        std::tuple<to<u32, decltype(Is)>...> size;
+        std::tuple<to<size_t, Is>...> size;
 
-        u64 MultiplySizes() const
+        size_t MultiplySizes() const
         {
             return 1;
         }
 
         template<typename Head, typename... Tail>
-        u64 MultiplySizes(Head head, Tail... tail) const
+        size_t MultiplySizes(Head head, Tail... tail) const
         {
             return head * MultiplySizes(tail...);
         }
 
-        template<u32 dimIndex>
-        u64 _Index(u32 offset) const
+        template<size_t dimIndex>
+        size_t _Index(size_t offset) const
         {
             return 0;
         }
 
-        template<u32 dimIndex, typename Head, typename... Tail>
-        u64 _Index(u32 offset, Head head, Tail... tail) const
+        template<size_t dimIndex, typename Head, typename... Tail>
+        size_t _Index(size_t offset, Head head, Tail... tail) const
         {
             return head * offset + _Index<dimIndex + 1, Tail...>(offset * std::get<dimIndex>(size), tail...);
         }
 
         template<typename Head, typename... Tail>
-        u64 Index(Head head, Tail... tail) const
+        size_t Index(Head head, Tail... tail) const
         {
             return head + _Index<1, Tail...>(std::get<0>(size), tail...);
         }
     public:
-        Dynarray(const ValueType* value, to<u32, decltype(Is)>... sizes) :
+        Dynarray(const ValueType* value, to<size_t, Is>... sizes) :
             value(new ValueType[MultiplySizes(sizes...)]()),
             size(std::make_tuple(sizes...))
         {
             std::copy(value, value + MultiplySizes(sizes...), this->value);
         }
 
-        Dynarray(to<u32, decltype(Is)>... sizes) :
+        Dynarray(to<size_t, Is>... sizes) :
             value(new ValueType[MultiplySizes(sizes...)]()),
             size(std::make_tuple(sizes...))
         {}
@@ -131,23 +125,23 @@ namespace Astuurman {
             size = other.size;
         }
 
-        constexpr u32 Dimension()
+        constexpr size_t Dimension()
         {
             return dimension;
         }
 
-        ValueType& At(to<u32, decltype(Is)>... indexes)
+        ValueType& At(to<size_t, Is>... indexes)
         {
             return value[Index(indexes...)];
         }
 
-        const ValueType& At(to<u32, decltype(Is)>... indexes) const
+        const ValueType& At(to<size_t, Is>... indexes) const
         {
             return value[Index(indexes...)];
         }
 
-        template<u32 dim>
-        u32 Size() const
+        template<size_t dim>
+        size_t Size() const
         {
             return std::get<dim>(size);
         }

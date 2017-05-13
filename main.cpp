@@ -12,11 +12,11 @@ using namespace Astuurman;
 
 int main()
 {
-    const Dynarray<3, u32> myDynarray(2,3,4);
-    u32 t[3] = {5,6,7};
-    const Dynarray<1, u32> myDynarray2(t,3);
+    const Dynarray<3, size_t> myDynarray(2,3,4);
+    size_t t[3] = {5,6,7};
+    const Dynarray<1, size_t> myDynarray2(t,3);
 
-    for(u32 x = 0; x < myDynarray2.Size<0>(); ++x)
+    for(size_t x = 0; x < myDynarray2.Size<0>(); ++x)
     {
         std::cout << x << " " << myDynarray2.At(x) << std::endl;
     }
