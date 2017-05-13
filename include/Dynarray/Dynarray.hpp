@@ -40,55 +40,55 @@
 
 namespace Astuurman {
 
-    template<size_t dimension, typename ValueType, typename = std::make_index_sequence<dimension>>
+    template<std::size_t dimension, typename ValueType, typename = std::make_index_sequence<dimension>>
     class Dynarray;
 
-    template <size_t dimension, typename ValueType, std::size_t... Is>
+    template <std::size_t dimension, typename ValueType, std::size_t... Is>
     class Dynarray<dimension, ValueType, std::index_sequence<Is...>>
     {
         template<typename To, std::size_t>
         using to = To;
 
         ValueType* value;
-        std::tuple<to<size_t, Is>...> size;
+        std::tuple<to<std::size_t, Is>...> size;
 
-        size_t MultiplySizes() const
+        std::size_t MultiplySizes() const
         {
             return 1;
         }
 
         template<typename Head, typename... Tail>
-        size_t MultiplySizes(Head head, Tail... tail) const
+        std::size_t MultiplySizes(Head head, Tail... tail) const
         {
             return head * MultiplySizes(tail...);
         }
 
-        template<size_t dimIndex>
-        size_t _Index(size_t offset) const
+        template<std::size_t dimIndex>
+        std::size_t _Index(std::size_t offset) const
         {
             return 0;
         }
 
-        template<size_t dimIndex, typename Head, typename... Tail>
-        size_t _Index(size_t offset, Head head, Tail... tail) const
+        template<std::size_t dimIndex, typename Head, typename... Tail>
+        std::size_t _Index(std::size_t offset, Head head, Tail... tail) const
         {
             return head * offset + _Index<dimIndex + 1, Tail...>(offset * std::get<dimIndex>(size), tail...);
         }
 
         template<typename Head, typename... Tail>
-        size_t Index(Head head, Tail... tail) const
+        std::size_t Index(Head head, Tail... tail) const
         {
             return head + _Index<1, Tail...>(std::get<0>(size), tail...);
         }
     public:
-        Dynarray(const ValueType* value, to<size_t, Is>... sizes) :
+        Dynarray(const ValueType* value, to<std::size_t, Is>... sizes) :
             value(new ValueType[MultiplySizes(sizes...)]()),
             size(std::make_tuple(sizes...))
         {
             std::copy(value, value + MultiplySizes(sizes...), this->value);
         }
 
-        Dynarray(to<size_t, Is>... sizes) :
+        Dynarray(to<std::size_t, Is>... sizes) :
             value(new ValueType[MultiplySizes(sizes...)]()),
             size(std::make_tuple(sizes...))
         {}
@@ -125,23 +125,23 @@ namespace Astuurman {
             size = other.size;
         }
 
-        constexpr size_t Dimension()
+        constexpr std::size_t Dimension()
         {
             return dimension;
         }
 
-        ValueType& At(to<size_t, Is>... indexes)
+        ValueType& At(to<std::size_t, Is>... indexes)
         {
             return value[Index(indexes...)];
         }
 
-        const ValueType& At(to<size_t, Is>... indexes) const
+        const ValueType& At(to<std::size_t, Is>... indexes) const
         {
             return value[Index(indexes...)];
         }
 
-        template<size_t dim>
-        size_t Size() const
+        template<std::size_t dim>
+        std::size_t Size() const
         {
             return std::get<dim>(size);
         }
